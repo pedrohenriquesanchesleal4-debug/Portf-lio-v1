@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedro Henrique | Desenvolvedor de Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080b12;
+      --surface: #0d1120;
+      --surface2: #121828;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --green: #34d399;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* GRID NOISE BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* GLOW */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ======== NAVBAR ======== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(8,11,18,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 9px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+    /* ======== HERO ======== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 60px 80px;
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 28px;
+      letter-spacing: 1px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      color: #f8fafc;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .btn-main {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      padding: 14px 30px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-main:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 30px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* SOCIAL CHIPS */
+    .social-chips {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .chip:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ======== SECTIONS ======== */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+
+    /* ======== ABOUT ======== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    .about-card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .about-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .edu-item { margin-bottom: 16px; }
+    .edu-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .edu-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .edu-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      background: rgba(52,211,153,0.1);
+      color: var(--green);
+      border: 1px solid rgba(52,211,153,0.3);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-top: 5px;
+    }
+
+    .lang-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lang-row:last-child { border-bottom: none; }
+    .lang-name { font-size: 14px; color: var(--text); }
+    .lang-level {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent2);
+      background: rgba(129,140,248,0.1);
+      border: 1px solid rgba(129,140,248,0.25);
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+
+    /* ======== PROJECTS ======== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+
+    .project-card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-3px); }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .icon-blue { background: rgba(56,189,248,0.1); }
+    .icon-purple { background: rgba(129,140,248,0.1); }
+    .icon-green { background: rgba(52,211,153,0.1); }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      background: rgba(56,189,248,0.08);
+      border: 1px solid rgba(56,189,248,0.2);
+      border-radius: 4px;
+      padding: 3px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ======== SKILLS ======== */
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .skills-group h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .skill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .skill-info { display: flex; align-items: center; gap: 10px; }
+    .skill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .skill-name { font-size: 14px; color: var(--text); font-weight: 500; }
+    .skill-pct {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .skill-bar-bg {
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1s ease;
+    }
+
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tool-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+      transition: border-color 0.2s;
+    }
+
+    .tool-badge:hover { border-color: rgba(56,189,248,0.4); }
+    .tool-badge span { font-size: 16px; }
+
+    /* ======== EXPERIENCE ======== */
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 14px 14px 0;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .exp-role { font-size: 18px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
+    .exp-company { font-size: 14px; color: var(--accent); font-family: 'DM Mono', monospace; }
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+
+    .exp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-list li {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .exp-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    /* ======== CURSOS ======== */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .course-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .course-item:hover { border-color: rgba(129,140,248,0.4); }
+    .course-item span { font-size: 18px; }
+
+    /* ======== CONTACT ======== */
+    .contact-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .contact-wrapper h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .contact-wrapper p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 14px 24px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(56,189,248,0.05); }
+    .contact-link.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .contact-link.primary:hover { opacity: 0.88; }
+
+    /* ======== FOOTER ======== */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 28px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer p span { color: var(--accent); }
+
+    /* ======== ANIMATIONS ======== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">pedro.dev</div>
+    <ul class="nav-links">
+      <li><a href="#sobre">sobre</a></li>
+      <li><a href="#projetos">projetos</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#experiencia">experiência</a></li>
+      <li><a href="#contato">contato</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">falar comigo</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">disponível para estágio</div>
+    <h1>Pedro Henrique<br><span class="highlight">Desenvolvedor</span><br>de Software</h1>
+    <p class="hero-desc">
+      Dev Junior & Analista de Dados em formação. Focado em Python, JavaScript,
+      C# e automação de processos. Estudante de ADS na UCB — Brasília, DF.
+    </p>
+    <div class="social-chips">
+      <a class="chip" href="https://github.com/pedrohenriquesanchesleal4-debug" target="_blank">⚙ github</a>
+      <a class="chip" href="https://linkedin.com/in/pedro-henrique-sanches-leal" target="_blank">in linkedin</a>
+      <a class="chip" href="mailto:pedrohenriquesanchesleal4@gmail.com">✉ email</a>
+      <a class="chip" href="tel:+5561981399051">📞 +55 61 98139-9051</a>
+    </div>
+    <div class="hero-buttons">
+      <a class="btn-main" href="#projetos">ver projetos →</a>
+      <a class="btn-ghost" href="#contato">entrar em contato</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">3</div>
+        <div class="stat-label">projetos desenvolvidos</div>
+      </div>
+      <div>
+        <div class="stat-val">6+</div>
+        <div class="stat-label">cursos concluídos</div>
+      </div>
+      <div>
+        <div class="stat-val">5</div>
+        <div class="stat-label">linguagens/tecnologias</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="fade-in">
+    <div class="section-label">sobre mim</div>
+    <div class="section-title">Quem é Pedro?</div>
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>// resumo</h3>
+        <p>Desenvolvedor de Software Júnior e Analista de Dados em formação, com experiência em desenvolvimento web e automação de processos. Conhecimentos em Python, JavaScript, C#, SQL e Power BI. Experiência com Git/GitHub para versionamento e colaboração. Atualmente focado na busca de estágio para evolução técnica.</p>
+      </div>
+      <div class="about-card">
+        <h3>// educação</h3>
+        <div class="edu-item">
+          <div class="edu-title">Análise e Desenvolvimento de Sistemas</div>
+          <div class="edu-sub">Universidade Católica de Brasília</div>
+          <div class="edu-badge">em andamento · 2026 – 2028</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <h3>// idiomas</h3>
+        <div class="lang-row">
+          <span class="lang-name">🇧🇷 Português</span>
+          <span class="lang-level">nativo</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name">🇺🇸 Inglês</span>
+          <span class="lang-level">intermediário</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name">🇪🇸 Espanhol</span>
+          <span class="lang-level">intermediário</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <h3>// localização</h3>
+        <p>📍 Brasília – DF, Brasil<br><br>Disponível para estágio presencial, híbrido ou remoto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos" class="fade-in">
+    <div class="section-label">portfólio</div>
+    <div class="section-title">Projetos em destaque</div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-icon icon-blue">🤖</div>
+        <div class="project-name">Automatizador de Tabelas</div>
+        <div class="project-desc">Automação de processos e manipulação de dados com Python. Elimina tarefas repetitivas e acelera o tratamento de planilhas.</div>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Automação</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon icon-purple">🌐</div>
+        <div class="project-name">Sistema Web – Inova Tech</div>
+        <div class="project-desc">Sistema CRUD completo desenvolvido para empresa júnior. Interface web com operações de criação, leitura, atualização e deleção de dados.</div>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Python</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon icon-green">📚</div>
+        <div class="project-name">Sistema de Cadastro de Livros</div>
+        <div class="project-desc">Aplicação desktop para gerenciamento e controle de dados de um acervo bibliográfico, desenvolvida em C# com .Net 8.</div>
+        <div class="project-tags">
+          <span class="tag">C#</span>
+          <span class="tag">.Net 8</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="fade-in">
+    <div class="section-label">tecnologias</div>
+    <div class="section-title">Minhas skills</div>
+    <div class="skills-container">
+      <div class="skills-group">
+        <h3>// linguagens</h3>
+        <div class="skill-item">
+          <div>
+            <div class="skill-info"><div class="skill-dot"></div><div class="skill-name">JavaScript</div></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:75%"></div></div>
+          </div>
+          <div class="skill-pct">75%</div>
+        </div>
+        <div class="skill-item">
+          <div>
+            <div class="skill-info"><div class="skill-dot"></div><div class="skill-name">Python</div></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="skill-pct">70%</div>
+        </div>
+        <div class="skill-item">
+          <div>
+            <div class="skill-info"><div class="skill-dot"></div><div class="skill-name">HTML & CSS</div></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+          </div>
+          <div class="skill-pct">80%</div>
+        </div>
+        <div class="skill-item">
+          <div>
+            <div class="skill-info"><div class="skill-dot"></div><div class="skill-name">C# / .Net 8</div></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div>
+          </div>
+          <div class="skill-pct">60%</div>
+        </div>
+        <div class="skill-item">
+          <div>
+            <div class="skill-info"><div class="skill-dot"></div><div class="skill-name">SQL</div></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div>
+          </div>
+          <div class="skill-pct">65%</div>
+        </div>
+      </div>
+
+      <div class="skills-group">
+        <h3>// ferramentas</h3>
+        <div class="tools-grid">
+          <div class="tool-badge"><span>📊</span> Power BI</div>
+          <div class="tool-badge"><span>📁</span> Excel</div>
+          <div class="tool-badge"><span>🎨</span> Figma</div>
+          <div class="tool-badge"><span>🐙</span> Git & GitHub</div>
+          <div class="tool-badge"><span>☁️</span> Azure AI-900</div>
+          <div class="tool-badge"><span>🖥️</span> Pacote Office</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIA -->
+  <section id="experiencia" class="fade-in">
+    <div class="section-label">carreira</div>
+    <div class="section-title">Experiência</div>
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Desenvolvedor de Sistemas Web</div>
+          <div class="exp-company">Inova Tech — Empresa Júnior</div>
+        </div>
+        <div class="exp-period">2024 – atual</div>
+      </div>
+      <ul class="exp-list">
+        <li>Desenvolvimento de sistema web com operações CRUD utilizando HTML, CSS, JavaScript e Python</li>
+        <li>Implementação de funcionalidades para manipulação e armazenamento de dados</li>
+        <li>Colaboração em equipe com versionamento de código via Git e GitHub</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CURSOS -->
+  <section class="fade-in">
+    <div class="section-label">formação complementar</div>
+    <div class="section-title">Cursos & Certificações</div>
+    <div class="courses-grid">
+      <div class="course-item"><span>☁️</span> AI-900 – Fundamentos de IA no Azure</div>
+      <div class="course-item"><span>📊</span> Análise de Dados com Power BI</div>
+      <div class="course-item"><span>🌐</span> Desenvolvimento Web com HTML, CSS e JS</div>
+      <div class="course-item"><span>🗄️</span> Administração de Banco de Dados</div>
+      <div class="course-item"><span>🤖</span> Engenharia de Prompt – Nível Básico</div>
+      <div class="course-item"><span>💻</span> Fundamentos de TI: Hardware e Software</div>
+      <div class="course-item"><span>📁</span> Excel na Prática</div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="fade-in">
+    <div class="contact-wrapper">
+      <h2>Vamos trabalhar juntos?</h2>
+      <p>Estou disponível para estágio e projetos freelance. Manda uma mensagem!</p>
+      <div class="contact-links">
+        <a class="contact-link primary" href="mailto:pedrohenriquesanchesleal4@gmail.com">✉ enviar e-mail</a>
+        <a class="contact-link" href="https://linkedin.com/in/pedro-henrique-sanches-leal" target="_blank">in LinkedIn</a>
+        <a class="contact-link" href="https://github.com/pedrohenriquesanchesleal4-debug" target="_blank">⚙ GitHub</a>
+        <a class="contact-link" href="tel:+5561981399051">📞 (61) 98139-9051</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 · <span>Pedro Henrique Sanches Leal</span></p>
+    <p>feito com <span>HTML · CSS · JS</span> · Brasília, DF</p>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Navbar active highlight on scroll
+    const sections = document.querySelectorAll('section[id], div.hero');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) {
+          current = sec.id || '';
+        }
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
